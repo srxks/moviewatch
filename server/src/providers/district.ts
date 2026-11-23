@@ -88,10 +88,9 @@ export async function checkDistrict(target: WatchTarget, date: string): Promise<
       const cinemaName = c?.cinemaInfo?.name || `Cinema ${c?.id}`;
       for (const s of c?.sessions ?? []) {
         const timeStr = s.showTime ? toLocalTime(s.showTime) : s.showTimeText || 'Unknown';
-        const fid = s.fid || s.mcd || '';
-        const enc = s.encSessionId || '';
+        const fid = s.mcd || s.mid || target.movieCode;
         const bookingLink = target.bookingUrl ||
-          `https://www.district.in/movies/seat-layout/${fid}?encsessionid=${enc}&date=${date}&freeseating=false&fromsessions=true&type=CINEMAS`;
+          `https://www.district.in/movies/seat-layout/${fid}?sid=${s.sid}&cid=${s.cid}&date=${date}&freeseating=false&type=CINEMAS`;
 
         const tiers = (s.areas || [])
           .map((a: any) => `${a.label} ₹${Math.round(a.price)} (${a.sAvail}/${a.sTotal})`)

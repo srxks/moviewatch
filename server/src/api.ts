@@ -12,6 +12,11 @@ export function createServer() {
   app.use(cors());
   app.use(express.json());
 
+  // Health Check for Cloud Platforms (Railway, Render, Fly)
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', worker: 'online', uptime: Math.floor(process.uptime()) });
+  });
+
   // Status & Telemetry
   app.get('/api/status', (req, res) => {
     const watches = store.getWatches();
